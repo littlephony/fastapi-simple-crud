@@ -1,14 +1,23 @@
 from pydantic import BaseModel
+from fastapi import Form
+from typing import Optional
 
 class Todo(BaseModel):
-    id: int
+    id: Optional[int]
     item: str
+
+    @classmethod
+    def as_form(
+        cls,
+        item: str = Form(...)
+    ):
+        return cls(item=item)
 
     class Config:
         schema = {
             "example": {
                 "id": 1,
-                "item": "Do the dishes"
+                "item": "example schema"
             }
         }
 
@@ -18,7 +27,7 @@ class Item(BaseModel):
     class Config:
         schema = {
             "example": {
-                "item": "Read a chapter"
+                "item": "example schema"
             }
         }
 
