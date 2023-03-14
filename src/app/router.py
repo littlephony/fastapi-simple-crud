@@ -8,7 +8,7 @@ todos = []
 @router.post("/todo")
 async def add_todo(todo: Todo) -> dict:
     todos.append(todo)
-    return {"message": "Todo added successfully."}
+    return {"message": "Todo added successfully"}
 
 @router.get("/todo")
 async def retrieve_todos() -> dict:
@@ -26,5 +26,16 @@ async def get_todo(
             return {"todo": todo}
     return {"message": "Todo with provided ID doesn't exist"}
 
-    
-    
+@router.put("/todo/{todo_id}")
+async def update_todo(
+    todo_data: Item,
+    todo_id: int = Path(
+        ...,
+        title="ID of todo to be updated"
+    )
+) -> dict:
+    for idx, todo in enumerate(todos):
+        if todo.id == todo_id:
+            todos[idx].item = todo_data.item
+            return {"message": "Todo updated successfully"}
+    return {"message": "Todo with given ID doesn't exist"}
